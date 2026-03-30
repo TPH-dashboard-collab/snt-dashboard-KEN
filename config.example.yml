@@ -1,26 +1,31 @@
+# Country specific application configuration
+
+# Everything needs to be provided, no missing key value pairs allowed.
+
 default:
+  # Application log level, parsed from system's env vars.
   rhino_log_level: !expr Sys.getenv("RHINO_LOG_LEVEL", "INFO")
   rhino_log_file: !expr Sys.getenv("RHINO_LOG_LEVEL", NA)
 
   # Country identity
-  country_name: "Tanzania"
+  country_name: "Example country"
   dashboard_title: "Example Dashboard"
   dashboard_year_range: "2026-2030"
+  # Swiss TPH logo, can potentially be changed to something else.
   logo_path: "static/images/logosmall.png"
 
   # Data sources
   db_type: "SQLite"
   db_path: "app/data/input_data.sqlite"
   shapefile_dir: "app/data/shapefiles/"
-  # REVIEW: This is specific to TZA
-  # shapefile_admin1_col: "Region_Nam"
-  calibration_html: "static/html/Calib_TZA.html"
+
+  # HTML file is displayed in the assumptions panel
+  calibration_html: "static/html/my_html_file.html"
 
   # Data column conversion rules
   conversion_rules:
     "^active_int_": !expr as.logical
     "^deployed_int_": !expr as.logical
-
 
   # Display names for administrative levels
   admin_mapping:
@@ -39,11 +44,6 @@ default:
         BAU: "bau"
     scenarios:
         NSP: "nsp"
-
-  # Scenario plan prefixes used to classify scenarios from the DB
-  scenario_prefixes:
-    scenarios: "NSP"
-    references: "BAU"
 
   # Display names for scenarios
   scenario_mapping:
@@ -176,8 +176,10 @@ default:
         economic_evaluation:
             enabled: true
 
+# You can create any other profile. Each will inherit from the default one, so
+# no need to repeat the settings.
 dev:
   rhino_log_level: !expr Sys.getenv("RHINO_LOG_LEVEL", "DEBUG")
 
 shinyapps:
-  rhino_log_level: !expr Sys.getenv("RHINO_LOG_LEVEL", "DEBUG")
+  rhino_log_level: !expr Sys.getenv("RHINO_LOG_LEVEL", "INFO")
