@@ -4,6 +4,7 @@ box::use(
 )
 
 test_that("get_mutual_exclusivity_rules returns expected structure", {
+  setup_test_config()
   rules <- intervention_conflicts$get_mutual_exclusivity_rules()
 
   expect_type(rules, "list")
@@ -22,6 +23,7 @@ test_that("get_mutual_exclusivity_rules returns expected structure", {
 })
 
 test_that("detect_conflicts identifies CM/ICCM conflict", {
+  setup_test_config()
   interventions <- c("deployed_int_CM", "deployed_int_ICCM")
   result <- intervention_conflicts$detect_conflicts(interventions, "Test District")
 
@@ -35,6 +37,7 @@ test_that("detect_conflicts identifies CM/ICCM conflict", {
 })
 
 test_that("detect_conflicts identifies net type conflicts", {
+  setup_test_config()
   interventions <- c("deployed_int_STD_Nets", "deployed_int_PBO_Nets")
   result <- intervention_conflicts$detect_conflicts(interventions, "Test District")
 
@@ -47,6 +50,7 @@ test_that("detect_conflicts identifies net type conflicts", {
 })
 
 test_that("detect_conflicts finds no conflict for valid combinations", {
+  setup_test_config()
   interventions <- c(
     "deployed_int_CM",
     "deployed_int_STD_Nets",
@@ -60,6 +64,7 @@ test_that("detect_conflicts finds no conflict for valid combinations", {
 })
 
 test_that("detect_conflicts handles empty intervention list", {
+  setup_test_config()
   interventions <- character(0)
   result <- intervention_conflicts$detect_conflicts(interventions, "Test District")
 
@@ -68,6 +73,7 @@ test_that("detect_conflicts handles empty intervention list", {
 })
 
 test_that("detect_conflicts identifies multiple conflicts", {
+  setup_test_config()
   interventions <- c(
     "deployed_int_CM",
     "deployed_int_ICCM",
@@ -83,6 +89,7 @@ test_that("detect_conflicts identifies multiple conflicts", {
 })
 
 test_that("resolve_conflicts keeps highest priority", {
+  setup_test_config()
   interventions <- c("deployed_int_CM", "deployed_int_ICCM")
   conflicts <- intervention_conflicts$detect_conflicts(interventions, "Test")
   priorities <- c(deployed_int_CM = 10, deployed_int_ICCM = 9)
@@ -97,6 +104,7 @@ test_that("resolve_conflicts keeps highest priority", {
 })
 
 test_that("resolve_conflicts returns original if no conflicts", {
+  setup_test_config()
   interventions <- c("deployed_int_CM", "deployed_int_STD_Nets")
   conflicts <- intervention_conflicts$detect_conflicts(interventions, "Test")
   priorities <- intervention_conflicts$get_intervention_priorities()
@@ -111,6 +119,7 @@ test_that("resolve_conflicts returns original if no conflicts", {
 })
 
 test_that("resolve_conflicts handles multiple conflict groups", {
+  setup_test_config()
   interventions <- c(
     "deployed_int_CM",
     "deployed_int_ICCM",
@@ -138,6 +147,7 @@ test_that("resolve_conflicts handles multiple conflict groups", {
 })
 
 test_that("get_intervention_priorities returns all interventions", {
+  setup_test_config()
   priorities <- intervention_conflicts$get_intervention_priorities()
 
   expect_true(!is.null(names(priorities)))
@@ -155,6 +165,7 @@ test_that("get_intervention_priorities returns all interventions", {
 })
 
 test_that("resolve_conflicts handles missing priorities gracefully", {
+  setup_test_config()
   interventions <- c("deployed_int_CM", "deployed_int_ICCM")
   conflicts <- intervention_conflicts$detect_conflicts(interventions, "Test")
   priorities <- c(deployed_int_CM = 10) # Missing ICCM priority

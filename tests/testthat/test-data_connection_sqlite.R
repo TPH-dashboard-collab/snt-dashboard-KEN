@@ -25,6 +25,8 @@ box::use(
 create_test_db <- function() {
   db_path <- tempfile(fileext = ".db")
 
+  setup_test_config(envir = parent.frame())
+
   # Create database via a separate connection to avoid issues with the setup
   # function
   con <- dbConnect(SQLite(), db_path)
